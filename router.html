@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Router</title>
+    <script src="./lib/jquery-3.5.1.js"></script>
+    <script src="./lib/underscore.js"></script>
+    <script src="./lib/backbone.js"></script>
+  </head>
+  <body>
+    <a href="#/home">Home</a> &nbsp; <a href="#/aboutus">Aboutus</a>
+    <div id="container"></div>
+
+    <script type="text/javascript">
+      var HomeView = Backbone.View.extend({
+        el: "#container",
+        template: _.template(
+          'This is my Home View.<input id="btnGo" type="button" value="click here" />'
+        ),
+        events: {
+          "click #btnGo": "goToAboutUs"
+        },
+        goToAboutUs: function() {
+          // alert("GoToAboutUs");
+          router.navigate("aboutus", { trigger: true });
+        },
+        initialize: function() {
+          this.render();
+          // $("el").on("click", function() {
+          //   alert();
+          // });
+        },
+        render: function() {
+          this.$el.html(this.template());
+        }
+      });
+
+      var AboutusView = Backbone.View.extend({
+        el: "#container",
+        template: _.template("This is About Us View"),
+        initialize: function() {
+          this.render();
+        },
+        render: function() {
+          this.$el.html(this.template());
+        }
+      });
+
+      var homeView = new HomeView();
+
+      var MyRouter = Backbone.Router.extend({
+        routes: {
+          "home(/:id)": "showHomeView",
+          aboutus: "showAboutusView"
+        },
+        //Gets called on each route before route function gets executed. Pre-Route
+        execute: function(callback, args) {
+          console.log("In execute method");
+          // if(!isLoogedin){
+          //   router.navigate("login",{trigger:true})
+          //   return ;
+          // }
+          if (callback) callback(args);
+        },
+        showHomeView: function(id) {
+          console.log("show Home View");
+          console.log("id is", id);
+          homeView.render();
+        },
+        showAboutusView: function() {
+          console.log("show About us View");
+          new AboutusView();
+        }
+      });
+      var router = new MyRouter();
+      Backbone.history.start(); //start router'
+      Backbone.history.on("route", function(router, route, params) {
+        console.log("Backbone.history.on Route for post route actions");
+      });
+    </script>
+  </body>
+</html>

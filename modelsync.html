@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Model Sync</title>
+    <script src="./lib/jquery-3.5.1.js"></script>
+    <script src="./lib/underscore.js"></script>
+    <script src="./lib/backbone.js"></script>
+  </head>
+  <body>
+    <script type="text/javascript">
+      var Todo = Backbone.Model.extend({
+        urlRoot: "https://jsonplaceholder.typicode.com/todos"
+      });
+
+      //get
+      var t1 = new Todo({ id: 3 });
+      t1.fetch().then(data => {
+        console.log("data", data);
+      });
+
+      //put
+      t1.set("title", "new Title");
+      t1.save().then(data => {
+        console.log("updated data", data);
+      });
+
+      //delete
+      t1.destroy({
+        success: function() {
+          console.log("destroyed");
+        }
+      });
+
+      //Collections
+      var TodoCollection = Backbone.Model.extend({
+        url: "https://jsonplaceholder.typicode.com/todos"
+      });
+      var todos = new TodoCollection();
+      //collection fetch
+      todos.fetch().then(data => {
+        console.log("all Todos", data);
+      });
+
+      //get - https://jsonplaceholder.typicode.com/todos/1 -- fetch()
+
+      //post/put -  - save()
+      //post - https://jsonplaceholder.typicode.com/todos   --create new todo
+      //put/patch  - https://jsonplaceholder.typicode.com/todos/1  --new data
+      //delete- destroy()
+      //delete  - https://jsonplaceholder.typicode.com/todos/1
+    </script>
+  </body>
+</html>
