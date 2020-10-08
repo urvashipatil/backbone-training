@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Models</title>
+    <script src="./lib/jquery-3.5.1.js"></script>
+    <script src="./lib/underscore.js"></script>
+    <script src="./lib/backbone.js"></script>
+  </head>
+  <body>
+    <div id="container"></div>
+
+    <script type="text/template" id="tmpl-collection">
+      <span>List</span>
+      <% data.forEach(function(item){ %>
+        <div><%= item.name %>  <%= item.address %></div>
+      <% }) %>
+    </script>
+
+    <script type="text/javascript">
+      var Person = Backbone.Model.extend({
+        defaults: {
+          id: 0,
+          name: "default name",
+          address: "default addres",
+          age: 10
+        }
+      });
+
+      var p1 = new Person({
+        id: 1,
+        name: "Urvashi",
+        address: "Mulund",
+        designation: "manager",
+        age: 10
+      });
+      var p2 = new Person({
+        id: 2,
+        name: "person 2",
+        address: "p2 address",
+        designation: "manager",
+        age: 10
+      });
+      var p3 = new Person({
+        id: 3,
+        name: "person 3",
+        address: "p3 address",
+        designation: "manager",
+        age: 10
+      });
+
+      var MyCollection = Backbone.Collection.extend({
+        model: Person
+      });
+
+      var c1 = new MyCollection([p1, p2, p3]);
+
+      var p4 = new Person({
+        id: 4,
+        name: "person 4",
+        address: "p4 address",
+        designation: "manager",
+        age: 10
+      });
+
+      var View = Backbone.View.extend({
+        el: "#container",
+        collection: c1,
+        // model:c1,
+        template: _.template($("#tmpl-collection").html()),
+        initialize: function() {
+          this.render();
+          this.listenTo(this.collection, "add", () => {
+            console.log("Add fired");
+            this.render();
+          });
+          this.listenTo(this.collection, "remove", () => {
+            console.log("Remove fired");
+            this.render();
+          });
+          this.listenTo(this.collection, "reset", () => {
+            console.log("Reset fired");
+            this.render();
+          });
+        },
+        render: function() {
+          if (this.collection) {
+            this.$el.html(this.template({ data: this.collection.toJSON() }));
+          }
+        }
+      });
+
+      var v1 = new View({ collection: c1 });
+
+      // //Add data in collection start
+      // //add at end
+      // c1.push(p4);
+      // //add at particular index
+      // c1.add(p4, { at: 1 });
+      // //add at start
+      // c1.unshift(p4);
+      // //Add data in collection end
+
+      //Remove data start
+      //pop -- remove from last
+      // c1.pop();
+      // //remove(p2)
+      // c1.remove(p2);
+      // //shift remove from start
+      // c1.shift();
+      //Remove data end
+
+      //Change collections events
+      //c1.add(p4); -- Add event
+      //c1.pop() -- remove event
+      //c1.reset([p1,p2,p3,p4]); -- reset event
+    </script>
+  </body>
+</html>
