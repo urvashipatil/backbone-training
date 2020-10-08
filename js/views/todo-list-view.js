@@ -1,10 +1,16 @@
 var TodoListView = Backbone.View.extend({
   el: "#todo-list",
   initialize: function() {
-    this.listenTo(this.model, "add", () => {
-      this.render();
+    this.listenTo(this.model, "add", newAddedTodo => {
+      console.log("todo added", newAddedTodo);
+      // this.render(); //This will render entire list view again
+      //This is used to add only 1 row for newly added todo in the view
+      let todoitemview = new TodoItemView({
+        model: newAddedTodo
+      }).render().$el;
+      this.$el.prepend(todoitemview);
     });
-    this.listenTo(this.model, "reset", () => {
+    this.listenTo(this.model, "remove change", () => {
       this.render();
     });
 
@@ -12,8 +18,7 @@ var TodoListView = Backbone.View.extend({
   },
   render: function() {
     this.$el.html("");
-    this.model.toJSON().forEach(item => {
-      console.log(item.title);
+    this.model.models.forEach(item => {
       let todoitemview = new TodoItemView({ model: item }).render().$el;
       this.$el.append(todoitemview);
     });

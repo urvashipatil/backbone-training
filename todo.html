@@ -27,6 +27,9 @@
         font-size: 20px;
         font-weight: 700;
       }
+      .badge {
+        cursor: pointer;
+      }
     </style>
   </head>
   <body>
@@ -38,18 +41,18 @@
 
     <script type="text/template" id="tmpl-todo-form">
       <form id="frmTodo">
-        <input type="text" id="title"  class="w-75 mb-3">
+        <input type="text" id="title" value="<%= title %>"  class="w-75 mb-3">
         <button type="submit" >Submit</button>
       </form>
     </script>
 
     <script type="text/template" id="tmpl-todo-item">
-      <div class="todo-title p-2" data-id="<%= todo.id %>"><%= todo.title %>
-        <span class="bookmark" data-id="<%= todo.id %>"><% if (todo.book_marked) {%> ☗ <% } else { %> ☖ <% } %></span>
-        <a data-id="<%= todo.id %>" class="fa fa-trash-o delete float-right pr-1" href="javascript:void(0)"></a>
-        <a data-id="<%= todo.id %>"  class="edit fa fa-pencil-square-o float-right pr-1" href="javascript:void(0)"></a>
+      <div class="todo-title p-2" ><%= todo.title %>
+        <span class="bookmark"><% if (todo.book_marked) {%> ☗ <% } else { %> ☖ <% } %></span>
+        <a  class="fa fa-trash-o delete float-right pr-1" href="javascript:void(0)"></a>
+        <a   class="edit fa fa-pencil-square-o float-right pr-1" href="javascript:void(0)"></a>
       </div>
-      <div>
+      <div class="status" >
           <% if (todo.completed) { %>
             <span class="badge badge-success">completed</span>
           <% } else { %>
