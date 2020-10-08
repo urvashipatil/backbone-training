@@ -12,11 +12,12 @@
   <body>
     <script type="text/javascript">
       var Todo = Backbone.Model.extend({
-        urlRoot: "https://jsonplaceholder.typicode.com/todos"
+        urlRoot: "https://jsonplaceholder.typicode.com/todos",
+        idAttribute: "todo_id"
       });
 
       //get
-      var t1 = new Todo({ id: 3 });
+      var t1 = new Todo({ todo_id: 3 });
       t1.fetch().then(data => {
         console.log("data", data);
       });
@@ -35,7 +36,7 @@
       });
 
       //Collections
-      var TodoCollection = Backbone.Model.extend({
+      var TodoCollection = Backbone.Collection.extend({
         url: "https://jsonplaceholder.typicode.com/todos"
       });
       var todos = new TodoCollection();
