@@ -1,4 +1,5 @@
 var TodoItemView = Backbone.View.extend({
+  className: "card todo-item",
   template: _.template($("#tmpl-todo-item").html()),
   events: {
     "click .delete": "deleteTodo"
