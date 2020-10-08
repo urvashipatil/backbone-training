@@ -16,6 +16,25 @@
       <div>
         <p>Name</p>
         <p><input type="text" value="<%= name %>" /></p>
+        <p><input id="btnClick" type="button" value="click here!"></p>
+        <button>New button</button>
+        <button>second button</button>
+
+        <% var a=10;
+          var d=20;
+          if (a>5) { %>
+          <%= a+d %>
+        <% } %>
+
+      <p><%  if(b>5){ %>
+        <%= b %>
+      <%}%></p>
+
+      <% for(var i =0; i<b; i++ ) { %>
+          <%= i %>
+        <% } %>
+
+
       </div>
     </script>
 
@@ -26,6 +45,20 @@
         // className: "my-class",
         // tagName: "span",
         //Constructor
+        events: {
+          //"<event> <selector>" :<method name>
+          "click #btnClick": "clickHere",
+          "mouseover #btnClick": "mouseOverEvent"
+        },
+        mouseOverEvent: function() {
+          alert("mouseOverEvent !");
+          //Removes the events
+          // this.$el.off("mouseover", "#btnClick");
+          this.$el.undelegate("#btnClick", "mouseover");
+        },
+        clickHere: function() {
+          alert("clicked !");
+        },
         initialize: function() {
           console.log("Initialize");
           this.render();
@@ -33,7 +66,7 @@
         render: function() {
           console.log("In the Render method");
           this.$el.html(
-            this.template({ name: "Manas's", designation: "Manager" })
+            this.template({ name: "Manas's", designation: "Manager", b: 5 })
           );
 
           // $(this.el).html("This is my first view");

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Models</title>
+    <script src="./lib/jquery-3.5.1.js"></script>
+    <script src="./lib/underscore.js"></script>
+    <script src="./lib/backbone.js"></script>
+  </head>
+  <body>
+    <div id="container"></div>
+
+    <script type="text/javascript">
+      var Person = Backbone.Model.extend({
+        defaults: {
+          id: 0,
+          name: "default name",
+          address: "default addres"
+        },
+        salary: 200,
+        walking: function() {
+          console.log("Person walking", this.salary);
+        }
+      });
+
+      var Employee = Person.extend({
+        salary: 100,
+        walking: function() {
+          Person.prototype.walking.call(this);
+          console.log("Employee walking");
+        }
+      });
+
+      var View = Backbone.View.extend({
+        el: "#container",
+        // model: p1,
+        template: _.template("This is my Model- View template. <%= name %>"),
+        initialize: function() {
+          this.render();
+        },
+        render: function() {
+          // console.log("this", this);
+          if (this.model) {
+            this.$el.html(this.template(this.model.toJSON()));
+          }
+        }
+      });
+
+      var p1 = new Person({
+        id: 1,
+        name: "<span>Urvashi<span>",
+        address: "Mulund",
+        designation: "manager"
+      });
+      var p2 = new Person({
+        id: 1,
+        name: "Mannavi",
+        address: "Mumbai",
+        designation: "Lead"
+      });
+
+      var v1 = new View();
+      v1.model = p1;
+      v1.render();
+
+      // //Get the data of attribte specified
+      // console.log(p1.get("name"));
+      // //set
+      // p1.set("name", "new value");
+      // console.log(p1.get("name"));
+      // //delete attribute
+      // p1.unset("name");
+      // //has - check the attribute present or not
+      // p1.has("address");
+      // //JSON object of my model
+      // console.log(p1.toJSON()); //OR
+      // console.log(p1.attributes);
+    </script>
+  </body>
+</html>
